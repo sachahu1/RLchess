@@ -48,7 +48,7 @@ class VisualBoard(object):
     pygame.quit()
 
   def find_click(self, click_position: Tuple[int, int]) -> Tuple[int, int]:
-    return click_position[0] // self.slot_size[0], click_position[1] // self.slot_size[1]
+    return click_position[1] // self.slot_size[1], click_position[0] // self.slot_size[0]
 
   def select(self, slot):
     if self.selected_slot:

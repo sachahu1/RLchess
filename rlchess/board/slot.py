@@ -1,9 +1,11 @@
 import logging
+from typing import Optional
 
 import pygame
 
 from rlchess.board.board_config import BoardConfig
 from rlchess.board.color_palette import ColorPalette
+from rlchess.board.pieces.abstract_piece import AbstractPiece
 from rlchess.utils.slot_utils import is_even
 
 
@@ -26,6 +28,30 @@ class Slot(object):
       self.background_color = ColorPalette.DARK
     self.base_color = self.background_color
 
+    self._has_piece = False
+    self._piece: Optional[AbstractPiece] = None
+
+  @property
+  def piece(self) -> Optional[AbstractPiece]:
+    return self._piece
+
+  @piece.setter
+  def piece(self, value: Optional[AbstractPiece]):
+    self._piece = value
+
+    if value:
+      self._has_piece = True
+    else:
+      self._has_piece = False
+
+  @property
+  def has_piece(self):
+    return self._has_piece
+
+  @has_piece.setter
+  def has_piece(self, value: bool):
+    self._has_piece = value
+
   def compute_slot_size(self):
     self.row_size = BoardConfig.screen_size[0] // 8
     self.column_size = BoardConfig.screen_size[1] // 8
@@ -44,10 +70,15 @@ class Slot(object):
     slot_surface = pygame.Surface(self.slot_size)
     slot_surface.fill(self.background_color)
 
+    if self.has_piece:
+      piece_image = self.piece.image
+      piece_image = pygame.transform.scale(piece_image, self.slot_size)
+      slot_surface.blit(piece_image, (0, 0))
+
     return slot_surface
 
   def select(self):
-    logging.debug(f"Selected Slot ({self.row, self.column})")
+    logging.debug(f"Selected Slot {self.row, self.column}")
     selected_color = pygame.Color(ColorPalette.SELECTED)
     selected_color = selected_color.lerp(self.background_color, 0.5)
 
