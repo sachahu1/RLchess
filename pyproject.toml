@@ -1,0 +1,42 @@
+[tool.poetry]
+name = "RLchess"
+version = "0.1.0"
+description = ""
+authors = ["Sacha Hu <sachahu@hotmail.fr>"]
+packages = [
+    { include = "rlchess" }
+]
+homepage = "https://github.com/sachahu1/RLchess"
+repository = "https://github.com/sachahu1/RLchess"
+documentation = ""
+readme = "./README.md"
+maintainers = ["Sacha Hu"]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.9"
+pygame = "^2.1.2"
+
+[tool.poetry.dev-dependencies]
+Sphinx = "^4.2.0"
+sphinxcontrib-napoleon = "^0.7"
+myst-parser = "^0.15.2"
+sphinx-rtd-theme = "^1.0.0"
+pytest = "^6.2.5"
+sphinx-autodoc-typehints = "^1.12.0"
+sphinx-copybutton = "*"
+coverage = {version = "^6.4.2", extras = ["toml"]}
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q --junit-xml=test_results/tests.xml"
+testpaths = ["test"]
+
+[tool.coverage.run]
+source = ["rlchess"]
+
+[tool.poetry.scripts]
+RLchess = "rlchess.cli:run"
